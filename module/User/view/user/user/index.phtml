@@ -19,6 +19,7 @@ $this->headTitle($title);
 	<th>Profile</th>
     <th>User Name</th>
     <th>Email</th>
+    <th>Role</th>
     <th>Account Status</th>
     <th>Verification Status</th>
     <th>Account Actions</th>
@@ -31,6 +32,8 @@ foreach ($users as $listUser) :
     	<td><a href="<?=$this->url('profile', ['action' => 'view', 'userName' => $listUser->userName]); ?>" class="btn btn-outline-info btn-sm">Profile</a></td>
         <td><?= $this->escapeHtml($listUser->userName) ?></td>
         <td><?= $this->escapeHtml($listUser->email) ?></td>
+        <td><?= $this->escapeHtml($roleFilter->filter($listUser->role))?></td>
+        
         <?php
         if ((bool) $listUser->active) :
         ?>

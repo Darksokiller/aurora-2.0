@@ -39,6 +39,7 @@ class UserController extends AbstractController
             }
             $this->view->setVariable('hasMessage', $hasMessage);
             $this->view->setVariable('users', $this->table->fetchAll());
+            $this->view->setVariable('roleFilter', $this->sm->get('User\Filter\RoleFilter'));
             return $this->view;
         } catch (RuntimeException $e) {
             

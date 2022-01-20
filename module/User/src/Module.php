@@ -108,6 +108,11 @@ class Module implements ConfigProviderInterface, ViewHelperProviderInterface
                         $container->get(Filter\PasswordFilter::class)
                         );
                 },
+                Filter\RoleFilter::class => function($container) {
+                    return new Filter\RoleFilter(
+                        $container->get(Filter\RoleFilter::class)
+                    );
+                },
                 ],
                 ];
     }
