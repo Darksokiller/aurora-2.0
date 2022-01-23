@@ -71,6 +71,7 @@ class UserController extends AbstractController
                 $request = $this->getRequest();
                 // if this is not a post lets return early
                 $viewData['userName'] = $user->userName;
+                /** @var \Laminas\Http\Request $request */
                 if (! $request->isPost()) {
                     // bind the queried user data to the form
                     $form->bind($user);
@@ -83,6 +84,7 @@ class UserController extends AbstractController
                 // Set the input filters in the form object
                 $form->setInputFilter($filters->getEditUserFilter($this->table, $user->id));
                 // get the posted data
+                /** @var \Laminas\Http\Request $request */
                 $post = $request->getPost();
                 
                 // Set the posted data in the form so that it can be validated
@@ -173,6 +175,7 @@ class UserController extends AbstractController
         $form = new LoginForm();
         $form->get('submit')->setValue('Login');
         $request = $this->getRequest();
+        /** @var \Laminas\Http\Request $request */
         if (! $request->isPost()) {
             return ['form' => $form];
         }
