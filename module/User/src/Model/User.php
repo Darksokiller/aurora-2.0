@@ -10,4 +10,15 @@ class User extends Row
     {
         parent::__construct($primaryKeyColumn, $table, $adapterOrSql);
     }
+    /**
+     * 
+     * @return array $logData 
+     */
+    public function getLogData()
+    {
+        return [
+            'userId' => $this->offsetGet('id'), 
+            'userName' => $this->offsetGet('userName'),
+        ];
+    }
 }

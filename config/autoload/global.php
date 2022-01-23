@@ -18,7 +18,7 @@ return [
         ],
     ],
     'session_config' => [
-        'config_class' => User\Model\UsersSessionConfig::class,
+        'config_class' => Application\Session\Service\Config::class,
     ],
     'session_storage' => [
         'type' => \Laminas\Session\Storage\SessionArrayStorage::class,

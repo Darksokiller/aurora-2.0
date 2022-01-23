@@ -1,11 +1,12 @@
 <?php
-
 $title = 'Login';
 $this->headTitle($title);
-//echo $this->translate('user', 'user');
+// echo $this->translate('user', 'user');
 ?>
 <?php
-$form->setAttribute('action', $this->url('user', ['action' => 'login']));
+$form->setAttribute('action', $this->url('user', [
+    'action' => 'login'
+]));
 $form->prepare();
 
 $this->headLink()->prependStylesheet($this->basePath('css/aurora.css'));
@@ -13,7 +14,7 @@ $this->headLink()->prependStylesheet($this->basePath('css/aurora.css'));
 $user = $form->get('userName');
 $user->setAttribute('class', 'form-control');
 $user->setAttribute('placeholder', $this->translate('User Name'));
-//$user->setAttribute('size', '100');
+// $user->setAttribute('size', '100');
 $user->setAttribute('maxlength', '100');
 
 // This provides a default CSS class and placeholder text for the artist element:
@@ -37,26 +38,30 @@ $submit->setAttribute('class', 'btn btn-primary');
 // $form->setAttribute('action', $this->url('user', ['action' => 'add']));
 // $form->prepare();
 $buttonOptions = [
-'button_options' => [
-'class' => 'btn btn-primary btn-sm',
-'link_text' => 'Reset Password'
-		],
-		];
-echo $this->userControl('user', 'button', $this->url('password', ['action' => 'reset']), $buttonOptions);
+    'button_options' => [
+        'class' => 'btn btn-primary btn-sm',
+        'link_text' => 'Reset Password'
+    ]
+];
+echo $this->userControl('user', 'button', $this->url('password', [
+    'action' => 'reset',
+    'step' => 'submit-email'
+]), $buttonOptions);
 echo $this->form()->openTag($form);
 ?>
-<?php // Wrap the elements in divs marked as form groups, and render the
+<?php
+// Wrap the elements in divs marked as form groups, and render the
       // label, element, and errors separately within ?>
 <div class="form-group">
-    <?= $this->formLabel($user) ?>
-    <?= $this->formElement($user) ?>
-    <?= $this->formElementErrors()->render($user, ['class' => 'help-block']) ?>
+    <?=$this->formLabel($user)?>
+    <?=$this->formElement($user)?>
+    <?=$this->formElementErrors()->render($user, ['class' => 'help-block'])?>
 </div>
 
 <div class="form-group">
-    <?= $this->formLabel($password) ?>
-    <?= $this->formElement($password) ?>
-    <?= $this->formElementErrors()->render($password, ['class' => 'help-block']) ?>
+    <?=$this->formLabel($password)?>
+    <?=$this->formElement($password)?>
+    <?=$this->formElementErrors()->render($password, ['class' => 'help-block'])?>
 </div>
 
 <?php

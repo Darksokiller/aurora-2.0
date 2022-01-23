@@ -3,6 +3,10 @@
 namespace User\Controller;
 
 use Application\Controller\AbstractController;
+use Application\Event\LogEvents;
+use Application\Utilities\Mailer;
+use Laminas\Validator\Db\NoRecordExists as Validator;
+use Laminas\Mail\Message;
 use User\Form\UserForm;
 use User\Form\LoginForm;
 use User\Form\RegistrationForm;
@@ -10,23 +14,12 @@ use User\Model\User;
 use User\Model\UserTable;
 use User\Filter\RegistrationHash as Filter;
 use User\Filter\FormFilters;
-use Laminas\Validator\Db\NoRecordExists as Validator;
-use Application\Utilities\Mailer;
-use Application\Event\LogEvents;
-use Laminas\Mail\Message;
 
-
-/**
- * RegisterController
- * 
- * @author Joey Smith
- * @version 1.0 Alpha 1.0
- */
 class RegisterController extends AbstractController
 {
     /**
      * 
-     * @var $table \User\Model\UserTable
+     * @var \User\Model\UserTable $table
      */
     public $table;
     public function __construct(UserTable $table)
@@ -40,14 +33,7 @@ class RegisterController extends AbstractController
     {
         $formFilters = new FormFilters(null, $this->table);
         $sm = $this->getEvent()->getApplication()->getServiceManager();
-        //$this->logger
-        $mailer = $sm->get('Application\Utilities\Mailer');
-        //var_dump($mailer);
-        //$mailer->setEventManager($events);
-        //var_dump($mailer);
-       // $logger->info('test message', ['userId' => $this->user->id]);
-       // $mailer->send($this->user->id, 'this is a test registration email', 'someuser@domain.com');
-        
+        $mailer = $sm->get('Application\Utilities\Mailer');        
         if($this->appSettings->disableRegistration) {
            return $this->view; 
         }
@@ -82,14 +68,11 @@ class RegisterController extends AbstractController
         $filter = new Filter();
         $hash = $filter->filter($value);
         $token = $formData['email'] . $hash;
-        //$user = new User($this->table->getAdapter());
-        
         $formData['regDate'] = $timeStamp;
         $formData['regHash'] = $hash;
         // save the new user, $result should be the new users Id
         $result = $this->table->save($formData);
         $this->debug::dump($result, '$result');
-        //$newId = $this->table->getLastInsertValue();
         $sendEmail = false;
         if($result > 0) {
             /**
@@ -107,14 +90,11 @@ class RegisterController extends AbstractController
         if($sendEmail) {
             $this->hostName = $this->request->getServer('HTTP_HOST');
             $this->requestScheme = $this->request->getServer('REQUEST_SCHEME');
-            //$message = new Message();
-            
             $mailer->sendMessage($formData['email'], Mailer::VERIFICATION, $token);
         }
     }
     public function verifyAction()
     {
-    	
         $token = $this->request->getQuery('token');
         //$token = $this->params('token');
         $this->debug::dump($token, '$token');

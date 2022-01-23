@@ -23,59 +23,59 @@ abstract class AbstractController extends AbstractActionController
      */
     public $sm;
     /**
-     * 
+     *
      * @var \Application\Utilities\Debug $debug
      */
     public $debug;
     public $baseUrl;
     public $basePath;
     /**
-     * 
-     * @var string $referringUrl 
+     *
+     * @var string $referringUrl
      */
     public $referringUrl;
     /**
-     * 
+     *
      * @var $authService \Laminas\Authentication\AuthenticationService
      */
     public $authService;
     /**
-     * @var $user User\Model\User
+     * @var User\Model\User $user
      */
     public $user;
     /**
-     * 
-     * @var $logger \Laminas\Log\Logger
+     *
+     * @var \Laminas\Log\Logger $logger
      */
     public $logger;
     /**
-     * 
-     * @var $view \Laminas\View\Model\ViewModel
+     *
+     * @var \Laminas\View\ViewModel $view
      */
     public $view;
     /**
-     * 
-     * @var $table User\Model\UserTable
+     *
+     * @var User\Model\UserTable $table
      */
     public $table;
     /**
-     * 
-     * @var $acl \Laminas\Permission\Acl
+     *
+     * @var \Laminas\Permission\Acl $acl
      */
     public $acl;
 
     public $authenticated = false;
     /**
-     * 
+     *
      * @var $config array
      */
     public $config;
     /**
-     * 
-     * @var $appSettings \Laminas\Config\Config
+     *
+     * @var \Laminas\Config\Config $appSettings
      */
     public $appSettings;
-    
+
     protected $action;
 
     protected $sessionContainer;

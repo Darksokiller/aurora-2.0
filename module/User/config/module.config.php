@@ -10,97 +10,96 @@ return [
     'router' => [
         'routes' => [
             'user' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
                     'route' => '/user[/:action[/:userName]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'userName' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'userName' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ],
                     'defaults' => [
                         'controller' => Controller\UserController::class,
-                        'action'     => 'index',
-                    ],
-                ],
+                        'action' => 'index'
+                    ]
+                ]
             ],
             'profile' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
                     'route' => '/user/profile[/:action[/:userName]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'userName' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'userName' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ],
                     'defaults' => [
                         'controller' => Controller\ProfileController::class,
-                        'action'     => 'view',
-                    ],
-                ],
+                        'action' => 'view'
+                    ]
+                ]
             ],
-        	'password' => [
-        		'type'    => Segment::class,
-        		'options' => [
-        			'route' => '/user/password[/:action]',
-        			'constraints' => [
-        				'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-        				//'userName' => '[a-zA-Z][a-zA-Z0-9_-]*',
-        				],
-        				'defaults' => [
-        					'controller' => Controller\PasswordController::class,
-        					'action'     => 'index',
-        				],
-        		],
-        	],
+            'password' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/user/password[/:action[/:step]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'step' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ],
+                    'defaults' => [
+                        'controller' => Controller\PasswordController::class,
+                        'action' => 'index'
+                    ]
+                ]
+            ],
             'user.register' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
                     'route' => '/user/register[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
+                        'id' => '[0-9]+'
                     ],
                     'defaults' => [
                         'controller' => Controller\RegisterController::class,
-                        'action'     => 'index',
-                    ],
-                ],
+                        'action' => 'index'
+                    ]
+                ]
             ],
             'user.verify' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
                     'route' => '/user/register/verify',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
+                        'id' => '[0-9]+'
                     ],
                     'defaults' => [
                         'controller' => Controller\RegisterController::class,
-                        'action'     => 'verify',
-                    ],
-                ],
+                        'action' => 'verify'
+                    ]
+                ]
             ],
             'user.admin' => [
-                'type'    => Segment::class,
+                'type' => Segment::class,
                 'options' => [
                     'route' => '/user/admin[/:action[/:id]]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
+                        'id' => '[0-9]+'
                     ],
                     'defaults' => [
                         'controller' => Controller\AdminController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-            
-        ],
+                        'action' => 'index'
+                    ]
+                ]
+            ]
+        ]
     ],
     'controllers' => [
         'factories' => [
             Controller\ErrorController::class => InvokableFactory::class,
-        	Controller\PasswordController::class => Controller\Service\PasswordControllerFactory::class,
-        ],
+            Controller\PasswordController::class => Controller\Service\PasswordControllerFactory::class
+        ]
     ],
     'navigation' => [
         'static' => [
@@ -109,7 +108,7 @@ return [
                 'route' => 'user',
                 'class' => 'nav-link',
                 'resource' => 'user',
-                'privilege' => 'user.view.list',
+                'privilege' => 'user.view.list'
             ],
             [
                 'label' => 'Profile',
@@ -117,7 +116,7 @@ return [
                 'class' => 'nav-link',
                 'action' => 'view',
                 'resource' => 'user',
-                'privilege' => 'view',
+                'privilege' => 'view'
             ],
             [
                 'label' => 'Login',
@@ -125,7 +124,7 @@ return [
                 'class' => 'nav-link',
                 'action' => 'login',
                 'resource' => 'user',
-                'privilege' => 'login.view',
+                'privilege' => 'login.view'
             ],
             [
                 'label' => 'Logout',
@@ -133,7 +132,7 @@ return [
                 'class' => 'nav-link',
                 'action' => 'logout',
                 'resource' => 'user',
-                'privilege' => 'logout',
+                'privilege' => 'logout'
             ],
             [
                 'label' => 'Register',
@@ -141,18 +140,18 @@ return [
                 'class' => 'nav-link',
                 'action' => 'index',
                 'resource' => 'user',
-                'privilege' => 'register.view',
-            ],
+                'privilege' => 'register.view'
+            ]
         ],
         'admin' => [
             [
                 'label' => 'Admin Users',
                 'route' => 'user.admin',
                 'class' => 'nav-link',
-                //'controller' => 'admin',
+                // 'controller' => 'admin',
                 'action' => 'index',
                 'resource' => 'admin',
-                'privilege' => 'admin.access',
+                'privilege' => 'admin.access'
             ],
             [
                 'label' => 'Logout',
@@ -161,25 +160,13 @@ return [
                 'action' => 'logout',
                 'resource' => 'user',
                 'privilege' => 'logout',
-                'order' => 100,
-            ],
-        ],
+                'order' => 100
+            ]
+        ]
     ],
     'view_manager' => [
         'template_path_stack' => [
-            'user' => __DIR__ . '/../view',
-        ],
-    ],
-//     'language' => [
-//         'en' => [
-//             'US' => [
-//                 'errors' => [
-//                     'login' => [
-//                         'FAILURE_IDENTITY_NOT_FOUND' => 'If you are certain you have registered you may need to verify your account before you can login',
-//                         'FAILURE_CREDENTIAL_INVALID' => 'The supplied password was invalid',
-//                     ],
-//                 ],
-//             ],
-//         ],
-//     ],
+            'user' => __DIR__ . '/../view'
+        ]
+    ]
 ];

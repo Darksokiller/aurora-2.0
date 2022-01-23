@@ -1,2 +1,22 @@
 <?php
-echo $this->translate('loading');
+//echo $this->translate('loading');
+
+if ($showForm && isset($form) )
+{
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->form($form);
+    echo $this->form()->closeTag($form);
+}
+else {
+    $buttonOptions = [
+        'button_options' => [
+            'class' => 'btn btn-primary btn-sm',
+            'link_text' => 'Send reset email'
+        ]
+    ];
+    echo $this->userControl('user', 'button', $this->url('password', [
+        'action' => 'reset',
+        'step' => 'send-email'
+    ]), $buttonOptions);
+}

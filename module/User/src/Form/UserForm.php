@@ -7,16 +7,14 @@ use Laminas\Form\Element\Captcha;
 
 class UserForm extends Form
 {
-
     public function __construct($name = null, array $options = [])
     {
-        if(is_array($options) && !empty($options)) {
+        if (is_array($options) && ! empty($options)) {
             parent::setOptions($options);
             //var_dump($options);
         }
         // We will ignore the name provided to the constructor
         parent::__construct('RegistrationForm');
-        
         $this->add([
             'name' => 'id',
             'type' => 'hidden'
@@ -53,17 +51,17 @@ class UserForm extends Form
                 'label' => 'Confirm Password'
             ]
         ]);
-        if($this->options['enableCaptcha']) {
-        $this->add([
+        if ($this->options['enableCaptcha']) {
+            $this->add([
             'name' => 'captcha',
             'type' => Element\Captcha::class,
             'options' => [
                 'label' => 'Rewrite Captcha text:',
                 'captcha' => new \Laminas\Captcha\Image([
                     'name' => 'myCaptcha',
-                    'messages' => array(
-                        'badCaptcha' => 'incorrectly rewritten image text'
-                    ),
+                    'messages' => [
+                        'badCaptcha' => 'incorrectly rewritten image text',
+                    ],
                     'wordLen' => 5,
                     'timeout' => 300,
                     'font' => $_SERVER['DOCUMENT_ROOT'] . '/fonts/arbli.ttf',
@@ -85,5 +83,4 @@ class UserForm extends Form
             ]
         ]);
     }
-
 }

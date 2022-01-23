@@ -13,7 +13,6 @@ use User\Filter\PasswordFilter;
 use Laminas\Filter\StringToLower;
 use Laminas\Validator\Identical;
 
-
 class LoginForm extends Form
 {
 
@@ -21,7 +20,7 @@ class LoginForm extends Form
     {
         // We will ignore the name provided to the constructor
         parent::__construct('Login');
-        
+
         $this->add([
             'name' => 'userName',
             'type' => 'text',
@@ -46,5 +45,4 @@ class LoginForm extends Form
             ]
         ]);
     }
-
 }

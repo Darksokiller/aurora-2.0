@@ -12,15 +12,10 @@ use User\Filter\PasswordFilter;
 use Laminas\Filter\StringToLower;
 use Laminas\Validator\Identical;
 
-/**
- *
- * @author acesn
- *        
- */
 class FormFilters
 {
     protected $inputFilter;
-    
+
     /**
      */
     public function __construct($dbAdapter = null, $tablegateway = null)

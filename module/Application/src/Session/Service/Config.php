@@ -1,9 +1,9 @@
 <?php
-namespace User\Model;
+namespace Application\Session\Service;
 
 use Laminas\Session\Config\SessionConfig;
 
-class UsersSessionConfig extends SessionConfig
+class Config extends SessionConfig
 {
     protected $name = '_AURORA';
     protected $rememberMeSeconds = 300;
