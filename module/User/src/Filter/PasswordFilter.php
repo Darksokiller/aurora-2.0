@@ -4,6 +4,8 @@ use Laminas\Filter\AbstractFilter;
 
 class PasswordFilter extends AbstractFilter
 {
+
+    //test test
     public function filter($value)
     {
         if (!is_string($value)) {
