@@ -50,7 +50,7 @@ INSERT INTO `settings` (`id`, `variable`, `value`, `settingType`, `label`) VALUE
 (5, 'seoKeyWords', 'Aurora CMS, Webinertia.net, Php, MySQL', 'text', 'SEO Key Words'),
 (6, 'appName', 'ACMS', 'Text', 'Application Name'),
 (7, 'smtpSenderAddress', 'devel@webinertia.net', 'Text', 'SMTP Sender Email'),
-(8, 'smtpSenderPasswd', '**bffbGfbd88**', 'Text', 'SMTP Sender Password'),
+(8, 'smtpSenderPasswd', '', 'Text', 'SMTP Sender Password'),
 (9, 'appContactEmail', 'jsmith@dirextion.com', 'Text', 'Website Contact Email'),
 (10, 'enableMobileSupport', '1', 'CheckBox', 'Enable Mobile App support'),
 (11, 'seoDescription', 'A Content Management System', 'text', 'SEO Description'),

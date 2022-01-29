@@ -179,7 +179,7 @@ class FormFilters
         $this->inputFilter = $inputFilter;
         return $this->inputFilter;
     }
-    public function getEditUserFilter($table)
+    public function getEditUserFilter($table, $userId)
     {
         $this->table = $table;
         if ($this->inputFilter) {
@@ -195,37 +195,6 @@ class FormFilters
                 ['name' => ToInt::class],
             ],
         ]);
-        
-//         $inputFilter->add([
-//             'name' => 'userName',
-//             'required' => false,
-//             'filters' => [
-//                 ['name' => StripTags::class],
-//                 ['name' => StringTrim::class],
-//             ],
-//             'validators' => [
-//                 [
-//                     'name' => StringLength::class,
-//                     'options' => [
-//                         'encoding' => 'UTF-8',
-//                         'min' => 1,
-//                         'max' => 100,
-//                     ],
-//                     'name' => NoRecordExists::class,
-//                     'options' => [
-//                         'table' => $this->table->getTable(),
-//                         'field' => 'userName',
-//                         'exclude' => [
-//                             'field' => 'id',
-//                             'value' => $userId,
-//                         ],
-//                         'dbAdapter' => $this->table->getAdapter(),
-//                     ],
-//                 ],
-                
-//             ],
-//         ]);
-        
         $inputFilter->add([
             'name' => 'email',
             'required' => false,

@@ -50,7 +50,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 
                 <?php 
-               // var_dump($this->user);
                 $this->navigation()->setAcl($this->acl);
                 $this->navigation()->setRole($this->user->role);
                 $this->navigation()->menu()->setUlClass('navbar-nav');
@@ -61,20 +60,27 @@
         </nav>
         <div class="container">
             <?php
+                $flash = $this->flashMessenger();
+                $flash->setMessageOpenFormat('<div%s>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        &times;
+                    </button>
+                    <ul><li>')
+                ->setMessageSeparatorString('</li><li>')
+                ->setMessageCloseString('</li></ul></div>');
                 $plugin = $this->flashMessenger()->getPluginFlashMessenger();
             
-        	   if($plugin->hasCurrentErrorMessages()) {
-        	       $this->partial('/partials/notifications/error.phtml');
+        	   if($plugin->hasCurrentErrorMessages()) 
+               {
+        	       echo $flash->render('error',   ['alert', 'alert-dismissible', 'alert-danger']);
         	   }
-        	   if($plugin->hasCurrentWarningMessages()) {
-        	       $this->partial('/partials/notifications/warning.phtml');
+        	   if($plugin->hasCurrentInfoMessages()) 
+               {
+        	       echo $flash->render('info',    ['alert', 'alert-dismissible', 'alert-info']);
         	   }
-        	   if($plugin->hasCurrentInfoMessages()) {
-        	       $this->partial('/partials/notifications/info.phtml');
-        	   }
-        	   if($plugin->hasCurrentSuccessMessages()) {
-        	       //die(__FILE__);
-        	       $this->partial('/partials/notifications/success.phtml');
+        	   if($plugin->hasCurrentSuccessMessages()) 
+               {
+        	       echo $flash->render('success', ['alert', 'alert-dismissible', 'alert-success']);
         	   }
         	?>
             

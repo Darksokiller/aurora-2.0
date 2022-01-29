@@ -1,69 +1,58 @@
 <?php
-namespace User\Form;
 
-use Laminas\InputFilter\InputFilter;
-use Laminas\Form\Element\Captcha;
+namespace Application\Form;
+
 use Laminas\Form\Element\Email;
-use Laminas\Form\Element\Hidden;
-use Laminas\Form\Element\Password;
-use Laminas\Validator\Identical;
-use Laminas\Validator\Db\RecordExists;
-use Laminas\Form\Form;
-use Laminas\InputFilter\Input;
+use Laminas\Form\Element\Captcha;
+use Laminas\Form\Element\Text;
+use Laminas\Form\Element\Textarea;
+use Laminas\Validator\StringLength;
+use Laminas\InputFilter\InputFilter;
 use Laminas\Filter\StringTrim;
 use Laminas\Filter\StripTags;
-use User\Filter\PasswordFilter;
 use Laminas\Filter\StringToLower;
-use Laminas\Validator\StringLength;
-use Laminas\Validator\Db\NoRecordExists;
 
-class ResetPassword extends Form
+use Laminas\Form\Form;
+
+
+class ContactForm extends Form
 {
-    public function __construct($name, $options)
+    public function __construct($name = null, $options = [])
     {
-        parent::__construct('reset_password');
+        parent::__construct($name);
         parent::setOptions($options);
-        $this->table = $this->options['db'];
 
         $this->add([
-            'name' => 'resetTimeStamp',
-            'type' => 'hidden',
-        ]);
-        $this->add([
-            'name' => 'validationTimeStamp',
-            'type' => 'hidden',
+            'name' => 'fullName',
+            'type' => 'text',
+            'options' => [
+                'label' => 'Full Name',
+            ]
         ]);
         $this->add([
             'name' => 'email',
-            'type' => 'text',
+            'type' => 'email',
             'options' => [
-                'label' => 'Email'
+                'label' => 'Email',
             ]
         ]);
         $this->add([
-            'name' => 'password',
-            'type' => 'password',
+            'name' => 'message',
+            'type' => 'textarea',
             'options' => [
-                'label' => 'Password'
-            ]
-        ]);
-        $this->add([
-            'name' => 'conf_password',
-            'type' => 'password',
-            'options' => [
-                'label' => 'Confirm Password'
+                'label' => 'Message',
             ]
         ]);
         if ($this->options['enableCaptcha']) {
             $this->add([
                 'name' => 'captcha',
-                'type' => Element\Captcha::class,
+                'type' => 'captcha',
                 'options' => [
                     'label' => 'Rewrite Captcha text:',
                     'captcha' => new \Laminas\Captcha\Image([
                         'name' => 'myCaptcha',
                         'messages' => [
-                            'badCaptcha' => 'incorrectly rewritten image text'
+                            'badCaptcha' => 'incorrectly rewritten image text',
                         ],
                         'wordLen' => 5,
                         'timeout' => 300,
@@ -88,9 +77,26 @@ class ResetPassword extends Form
     }
     public function addInputFilter()
     {
-        $inputFilter = new InputFilter();
-
-        $inputFilter->add([
+        $filter = new InputFilter();
+        $filter->add([
+            'name' => 'fullName',
+            'required' => true,
+            'filters' => [
+                ['name' => StripTags::class],
+                ['name' => StringTrim::class],
+            ],
+            'validators' => [
+                [
+                    'name' => StringLength::class,
+                    'options' => [
+                        'encoding' => 'UTF-8',
+                        'min' => 1,
+                        'max' => 100,
+                    ],
+                ],
+            ],
+        ]);
+        $filter->add([
             'name' => 'email',
             'required' => true,
             'filters' => [
@@ -105,39 +111,11 @@ class ResetPassword extends Form
                         'min' => 1,
                         'max' => 100,
                     ],
-                    'name' => RecordExists::class,
-                    'options' => [
-                        'table' => $this->table->getTable(),
-                        'field' => 'email',
-                        'dbAdapter' => $this->table->getAdapter(),
-                        'messages' => [
-                            \Laminas\Validator\Db\RecordExists::ERROR_NO_RECORD_FOUND => 'Email not found!!',
-                        ],
-                    ],
                 ],
             ],
         ]);
-        $inputFilter->add([
-            'name' => 'password',
-            'required' => true,
-            'filters' => [
-                ['name' => StripTags::class],
-                ['name' => StringTrim::class],
-                ['name' => PasswordFilter::class],
-            ],
-            'validators' => [
-                [
-                    'name' => StringLength::class,
-                    'options' => [
-                        'encoding' => 'UTF-8',
-                        'min' => 1,
-                        'max' => 100,
-                    ],
-                ],
-            ],
-        ]);
-        $inputFilter->add([
-            'name' => 'conf_password',
+        $filter->add([
+            'name' => 'message',
             'required' => true,
             'filters' => [
                 ['name' => StripTags::class],
@@ -149,18 +127,11 @@ class ResetPassword extends Form
                     'options' => [
                         'encoding' => 'UTF-8',
                         'min' => 1,
-                        'max' => 100,
-                    ],
-                    'name' => Identical::class,
-                    'options' => [
-                        'token' => 'password',
-                        'messages' => [
-                            \Laminas\Validator\Identical::NOT_SAME => 'Passwords are not the same',
-                        ],
+                        'max' => 2000,
                     ],
                 ],
             ],
         ]);
-        return $inputFilter;
+        return $filter;
     }
 }

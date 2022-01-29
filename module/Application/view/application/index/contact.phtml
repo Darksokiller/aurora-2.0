@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ */
+if(isset($form) && $this->appSettings->enableContactUs):
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->form($form);
+    echo $this->form()->closeTag($form);
+endif;
+?>

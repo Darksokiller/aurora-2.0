@@ -36,13 +36,23 @@ return [
                     ],
                 ],
             ],
-            'application' => [
+            'site' => [
                 'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/site[/:action]',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
                         'action'     => 'index',
+                    ],
+                ],
+            ],
+            'contact' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/site/contact[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'contact',
                     ],
                 ],
             ],
@@ -127,6 +137,12 @@ return [
                 'route' => 'home',
                 'class' => 'nav-link',
                 'order' => '-10',
+            ],
+            [
+                'label' => 'Contact Us',
+                'route' => 'contact',
+                'class' => 'nav-link',
+                'order' => '20',
             ],
             [
                 'label' => 'Admin',

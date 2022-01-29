@@ -53,8 +53,6 @@ class UserController extends AbstractController
             $userName = $this->params()->fromRoute('userName');
             // this is the proper fetch for a user, all other calls are to be removed
             $user = $this->table->fetchByColumn('userName', $userName);
-            //if($this->acl->isAllowed())
-            
             // if they can not edit the user there is no point in preceeding
             if( ! $this->acl->isAllowed($this->user, $user, $this->action) ) {
                 $this->flashMessenger()->addWarningMessage('You do not have the required permissions to edit users');
@@ -68,10 +66,9 @@ class UserController extends AbstractController
                 $options['user'] = $this->user;
                 $form = new EditUserForm(null, $options);
                 $form->get('submit')->setAttribute('value', 'Edit');
-                $request = $this->getRequest();
                 // if this is not a post lets return early
                 $viewData['userName'] = $user->userName;
-                if (! $request->isPost()) {
+                if (! $this->request->isPost()) {
                     // bind the queried user data to the form
                     $form->bind($user);
                     // we should only need this when its not post, when form is initially built
@@ -83,10 +80,10 @@ class UserController extends AbstractController
                 // Set the input filters in the form object
                 $form->setInputFilter($filters->getEditUserFilter($this->table, $user->id));
                 // get the posted data
-                $post = $request->getPost();
+                $post = $this->request->getPost();
                 
                 // Set the posted data in the form so that it can be validated
-                $form->setData($request->getPost());
+                $form->setData($this->request->getPost());
                 // Validate the posted data via the filters set in the form object
                 // TODO: Fix this, this form object has no filters or validators defined in the form class
                 if (! $form->isValid()) {
@@ -172,17 +169,16 @@ class UserController extends AbstractController
         //var_dump($this->sm);
         $form = new LoginForm();
         $form->get('submit')->setValue('Login');
-        $request = $this->getRequest();
-        if (! $request->isPost()) {
+        if (! $this->request->isPost()) {
             return ['form' => $form];
         }
         // get the post data
-        $post = $request->getPost();
+        $post = $this->request->getPost();
         $filters = new FormFilters();
         // set the input filters on the form object
         $form->setInputFilter($filters->getLoginFilter());
         // set the posted data in the form objects context
-        $form->setData($request->getPost());
+        $form->setData($this->request->getPost());
         // check with the form object to verify data is valid
         if (! $form->isValid()) {
             return ['form' => $form];
