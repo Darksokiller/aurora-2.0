@@ -24,14 +24,14 @@ abstract class AbstractAdminController extends AbstractController implements Res
             $this->redirect()->toRoute('forbidden');
         }
         $adminParent = 'Application\Controller\AbstractAdminController';
-        switch ($adminParent === get_parent_class(get_called_class())) {
-            case true:
-                $this->layout('layout/admin');
-                break;
-            default:
+        // switch ($adminParent === get_parent_class(get_called_class())) {
+        //     case true:
+        //         $this->layout('layout/admin');
+        //         break;
+        //     default:
                 
-                break;
-        }
+        //         break;
+        // }
         return parent::_init();
     }
 }

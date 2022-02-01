@@ -52,6 +52,30 @@ class UserForm extends Form
             ]
         ]);
 
+        if ($this->options['enableCaptcha']) {
+            $this->add([
+                'name' => 'captcha',
+                'type' => \Laminas\Form\Element\Captcha::class,
+                'options' => [
+                    'label' => 'Rewrite Captcha text:',
+                    'captcha' => new \Laminas\Captcha\Image([
+                        'name' => 'myCaptcha',
+                        'messages' => [
+                            'badCaptcha' => 'incorrectly rewritten image text'
+                        ],
+                        'wordLen' => 5,
+                        'timeout' => 300,
+                        'font' => $_SERVER['DOCUMENT_ROOT'] . '/fonts/arbli.ttf',
+                        'imgDir' => $_SERVER['DOCUMENT_ROOT'] . '/modules/app/captcha/',
+                        'imgUrl' => '/modules/app/captcha/',
+                        'lineNoiseLevel' => 4,
+                        'width' => 200,
+                        'height' => 70
+                    ]),
+                ]
+            ]);
+        }
+
         $this->add([
             'name' => 'submit',
             'type' => 'submit',

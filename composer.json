@@ -35,20 +35,7 @@
 	"autoload" : {
 		"psr-4" : {
 			"Application\\" : "module/Application/src/",
-			"Album\\" : [
-				"module/Album/src",
-				"module/Album/src/Controller",
-				"module/Album/src/Form",
-				"module/Album/src/Model"
-			],
-			"User\\" : [
-				"module/User/src",
-				"module/User/src/Controller",
-				"module/User/src/Filter",
-				"module/User/src/Form",
-				"module/User/src/Model"
-			],
-			"Project\\" : "module/Project/src"
+			"User\\" : "module/User/src/"
 		}
 	},
 	"autoload-dev" : {

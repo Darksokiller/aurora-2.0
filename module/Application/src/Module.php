@@ -25,7 +25,8 @@ use Laminas\Log\Writer\Db;
 use Laminas\Log\Writer\FirePhp;
 use Laminas\Log\Formatter\Db as DbFormatter;
 use Laminas\Log\Formatter\FirePhp as FireBugformatter;
-
+use Application\Listener\SkinListener;
+use Laminas\View\Resolver\TemplateMapResolver;
 use Laminas\Config\Config;
 use Laminas\ModuleManager\Feature\ViewHelperProviderInterface;
 
@@ -37,12 +38,34 @@ class Module implements ViewHelperProviderInterface
         $config = include __DIR__ . '/../config/module.config.php';
         return $config;
     }
-    public function onBootstrap($e)
+    public function onBootstrap(MvcEvent $e)
     {
         $this->bootstrapSettings($e);
         $this->bootstrapSession($e);
         $this->bootstrapLogging($e);
         $this->boostrapTranslation($e);
+        $config = $e->getApplication()->getServiceManager()->get('config');
+        $viewConfig = $config['view_manager'];
+        $skinName = 'default';
+        // $base_template_path_stack = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'skin'. DIRECTORY_SEPARATOR .'view' . DIRECTORY_SEPARATOR . $skinName;
+        // $viewConfig['template_path_stack'] = $base_template_path_stack . DIRECTORY_SEPARATOR . 'module';
+        // $viewConfig['template_map']['layout/layout'] = $base_template_path_stack . DIRECTORY_SEPARATOR . 'layout' . DIRECTORY_SEPARATOR . 'layout.phtml';
+        // $viewConfig['template_map']['application/index/index'] = $viewConfig['template_path_stack'] . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'index' . DIRECTORY_SEPARATOR . 'index.phtml';
+        // $viewConfig['template_map']['error/403'] = $viewConfig['template_path_stack'] . DIRECTORY_SEPARATOR . 'error' . DIRECTORY_SEPARATOR . '403.phtml';
+        // $viewConfig['template_map']['error/404'] = $viewConfig['template_path_stack'] . DIRECTORY_SEPARATOR . 'error' . DIRECTORY_SEPARATOR . '404.phtml';
+        // $viewConfig['template_map']['error/index'] = $viewConfig['template_path_stack'] . DIRECTORY_SEPARATOR . 'error' . DIRECTORY_SEPARATOR . 'index.phtml';
+        $exit = '';
+        $application = $e->getApplication();
+        $sm = $e->getApplication()->getServiceManager();
+
+        /** @var TemplateMapResolver $templateMapResolver */
+        $templateMapResolver = $sm->get('ViewTemplateMapResolver');
+        $templateStackResolver = $sm->get('ViewTemplatePathStack');
+        $prefixPathStackResolver = $sm->get('ViewPrefixPathStackResolver');
+
+        // Create and register Skin listener
+        $listener = new SkinListener($templateMapResolver, $templateStackResolver, $prefixPathStackResolver);
+        $listener->attach($application->getEventManager());
     }
     public function bootstrapSettings($e)
     {
@@ -137,7 +160,7 @@ class Module implements ViewHelperProviderInterface
             $tableGateway = new TableGateway('session', $serviceManager->get(AdapterInterface::class));
             $saveHandler  = new DbTableGateway($tableGateway, new DbTableGatewayOptions());
             $session->setSaveHandler($saveHandler);
-            
+            $session->rememberMe();
             $session->start();
             $container = new Session\Container('initialized');
             //new session creation
@@ -167,7 +190,7 @@ class Module implements ViewHelperProviderInterface
             //session has expired
             return;
         }
-        //let’s check if our session is not already created (for the guest or user)
+        //let's check if our session is not already created (for the guest or user)
         if (isset($container->init)) {
             return;
         }
@@ -175,21 +198,20 @@ class Module implements ViewHelperProviderInterface
     public function getServiceConfig()
     {
         return [
-            SessionManager::class => function ($container) {
-                $config = $container->get('config');
-                $session = $config['session'];
-                $sessionConfig = new $session['config']['class']();
-                $sessionConfig->setOptions($session['config']['options']);
-                $sessionManager = new Session\SessionManager(
-                    \User\Model\UsersSessionConfig::class,
-                    new $session['storage'](),
-                    null
-                    );
-                \Laminas\Session\Container::setDefaultManager($sessionManager);
-                
-                return $sessionManager;
-            },
             'factories' => [
+                // SessionManager::class => function ($container) {
+                //     $config = $container->get('session_config');
+                //     $session = $config['session'];
+                //     $sessionConfig = new $session['session_config']['class']();
+                //    // $sessionConfig->setOptions($session['session_config']['options']);
+                //     $sessionManager = new Session\SessionManager($sessionConfig,
+                //         new $session['storage'](),
+                //         null
+                //         );
+                //     \Laminas\Session\Container::setDefaultManager($sessionManager);
+                    
+                //     return $sessionManager;
+                // },
                 Model\SettingsTableGateway::class => function ($container) {
                     $dbAdapter = $container->get(AdapterInterface::class);
                     return new SettingsTable(new TableGateway('settings', $dbAdapter, new RowGatewayFeature('id')));

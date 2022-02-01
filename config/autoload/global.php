@@ -18,7 +18,8 @@ return [
         ],
     ],
     'session_config' => [
-        'config_class' => Application\Session\Service\Config::class,
+        'use_cookies' => true,
+        'gc_maxlifetime' => 86400,
     ],
     'session_storage' => [
         'type' => \Laminas\Session\Storage\SessionArrayStorage::class,

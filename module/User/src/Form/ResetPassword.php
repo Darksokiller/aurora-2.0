@@ -57,7 +57,7 @@ class ResetPassword extends Form
         if ($this->options['enableCaptcha']) {
             $this->add([
                 'name' => 'captcha',
-                'type' => Element\Captcha::class,
+                'type' => \Laminas\Form\Element\Captcha::class,
                 'options' => [
                     'label' => 'Rewrite Captcha text:',
                     'captcha' => new \Laminas\Captcha\Image([
